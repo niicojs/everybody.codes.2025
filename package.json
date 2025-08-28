@@ -1,0 +1,20 @@
+{
+  "name": "advent-of-code-2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "init part1": "node init.js --part 1",
+    "init part2": "node init.js --part 2"
+  },
+  "dependencies": {
+    "clipboardy": "^4.0.0",
+    "consola": "^3.4.0",
+    "dotenv": "^17.2.1",
+    "mri": "^1.2.0",
+    "remeda": "^2.20.0",
+    "tinyqueue": "^3.0.0",
+    "z3-solver": "^4.13.4"
+  }
+}
