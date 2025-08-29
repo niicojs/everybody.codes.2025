@@ -43,14 +43,19 @@ function fall(x, y, instr) {
 }
 
 let answer = 0;
-for (let i = 1; i < nails[0].length / 2 + 1; i++) {
-  const x = (i - 1) * 2;
-  if (nails[0][x] !== '*') throw new Error('Invalid start');
-  const lr = instructions.shift();
-  const rx = fall(x, 0, lr.split(''));
-  const slot = rx / 2 + 1;
-  const val = slot * 2 - i;
-  answer += Math.max(0, val);
+for (const lr of instructions) {
+  let [toss, res] = [0, 0];
+  for (let i = 1; i < nails[0].length / 2 + 1; i++) {
+    const x = (i - 1) * 2;
+    const rx = fall(x, 0, lr.split(''));
+    const slot = rx / 2 + 1;
+    const val = slot * 2 - i;
+    if (val > res) {
+      [toss, res] = [i, val];
+    }
+  }
+  consola.log(lr, toss, '->', res);
+  answer += res;
 }
 
 consola.success('result', answer);

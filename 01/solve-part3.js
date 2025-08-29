@@ -4,6 +4,7 @@ import {
   getCurrentDay,
   getGrid,
   getRawData,
+  permutations,
   printGrid,
   timer,
 } from '../utils.js';
@@ -42,17 +43,36 @@ function fall(x, y, instr) {
   return x;
 }
 
-let answer = 0;
-for (let i = 1; i < nails[0].length / 2 + 1; i++) {
-  const x = (i - 1) * 2;
-  if (nails[0][x] !== '*') throw new Error('Invalid start');
-  const lr = instructions.shift();
-  const rx = fall(x, 0, lr.split(''));
-  const slot = rx / 2 + 1;
-  const val = slot * 2 - i;
-  answer += Math.max(0, val);
+// get all possibles values
+const toss = Array(instructions.length).fill(null);
+for (let ii = 0; ii < instructions.length; ii++) {
+  const lr = instructions[ii];
+  toss[ii] = [];
+  for (let i = 1; i < nails[0].length / 2 + 1; i++) {
+    const x = (i - 1) * 2;
+    const rx = fall(x, 0, lr.split(''));
+    const slot = rx / 2 + 1;
+    const val = Math.max(slot * 2 - i, 0);
+    toss[ii].push(val);
+  }
 }
 
+// find worst and best case
+function findMinMax(done = []) {
+  if (done.length === instructions.length) return [0, 0];
+  let [min, max] = [Infinity, -Infinity];
+  for (let i = 1; i < nails[0].length / 2 + 1; i++) {
+    if (done.includes(i)) continue;
+    const val = toss[done.length][i - 1];
+    const [newMin, newMax] = findMinMax([...done, i]);
+    min = Math.min(min, val + newMin);
+    max = Math.max(max, val + newMax);
+  }
+  return [min, max];
+}
+
+const [min, max] = findMinMax();
+const answer = `${min} ${max}`;
 consola.success('result', answer);
 consola.success('Done in', t.format());
 clipboard.writeSync(answer?.toString());
