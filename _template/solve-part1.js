@@ -17,7 +17,7 @@ consola.wrapAll();
 const day = getCurrentDay();
 const isReal = process.argv[2] === 'real';
 
-consola.start('Starting day ' + day);
+consola.start('Starting day ' + day, isReal ? '(real)' : '(test)');
 const t = timer();
 
 const raw = getRawData().trim();

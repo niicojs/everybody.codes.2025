@@ -9,6 +9,7 @@
     "init part2": "node init.js --part 2"
   },
   "dependencies": {
+    "@datastructures-js/deque": "^1.0.6",
     "clipboardy": "^4.0.0",
     "consola": "^3.4.0",
     "dotenv": "^17.2.1",

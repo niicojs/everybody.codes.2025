@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@datastructures-js/deque':
+        specifier: ^1.0.6
+        version: 1.0.6
       clipboardy:
         specifier: ^4.0.0
         version: 4.0.0
@@ -31,6 +34,9 @@ importers:
         version: 4.15.3
 
 packages:
+
+  '@datastructures-js/deque@1.0.6':
+    resolution: {integrity: sha512-iEDbJUYT5xRQFFwmBAz1ZVHg7hh4cIJFjajsprDICSXh6nIdgFPW7RpvmHfGfSplpjG/iaBaS7fHc8e4zK0qzQ==}
 
   async-mutex@0.3.2:
     resolution: {integrity: sha512-HuTK7E7MT7jZEh1P9GtRW9+aTWiDWWi9InbZ5hjxrnRa39KS4BW04+xLBhYNS2aXhHUIKZSw3gj4Pn1pj+qGAA==}
@@ -158,6 +164,8 @@ packages:
     engines: {node: '>=16'}
 
 snapshots:
+
+  '@datastructures-js/deque@1.0.6': {}
 
   async-mutex@0.3.2:
     dependencies:
