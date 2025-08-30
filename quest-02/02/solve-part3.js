@@ -1,7 +1,7 @@
 import { consola } from 'consola';
 import clipboard from 'clipboardy';
 import { Deque } from '@datastructures-js/deque';
-import { getCurrentDay, getRawData, timer } from '../utils.js';
+import { getCurrentDay, getRawData, timer } from '../../utils.js';
 
 consola.wrapAll();
 

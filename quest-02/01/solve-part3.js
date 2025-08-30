@@ -7,7 +7,7 @@ import {
   permutations,
   printGrid,
   timer,
-} from '../utils.js';
+} from '../../utils.js';
 
 consola.wrapAll();
 
