@@ -176,7 +176,7 @@ export function chunk(arr, len) {
   );
 }
 
-const gcd = (x, y) => (!y ? x : gcd(y, x % y));
+export const gcd = (x, y) => (!y ? x : gcd(y, x % y));
 const _lcm = (x, y) => (x * y) / gcd(x, y);
 /**
  *
