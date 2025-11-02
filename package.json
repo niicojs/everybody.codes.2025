@@ -9,13 +9,14 @@
     "init part2": "node init.js --part 2"
   },
   "dependencies": {
-    "@datastructures-js/deque": "^1.0.6",
-    "clipboardy": "^4.0.0",
+    "@datastructures-js/deque": "^1.0.8",
+    "clipboardy": "^5.0.0",
     "consola": "^3.4.0",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.3",
     "mri": "^1.2.0",
-    "remeda": "^2.20.0",
+    "ofetch": "^1.5.1",
+    "remeda": "^2.32.0",
     "tinyqueue": "^3.0.0",
-    "z3-solver": "^4.13.4"
+    "z3-solver": "^4.15.4"
   }
 }

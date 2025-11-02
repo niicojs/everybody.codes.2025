@@ -1,6 +1,5 @@
-# [everybody-coes-2025](https://everybody.codes/story/2/quests/)
+# [everybody-coes-2025](https://everybody.codes/)
 
-The Entertainment Hub [ No. 2 ]
 
 | Day |  Ok   |
 | --- | ----- |

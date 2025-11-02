@@ -1,6 +1,48 @@
+import { createDecipheriv } from 'crypto';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { consola } from 'consola';
 import { ofetch } from 'ofetch';
+
+function getClient() {
+  if (!process.env.COOKIE) throw new Error('No cookie in config!');
+
+  return ofetch.create({
+    baseURL: 'https://everybody.codes/api/',
+    headers: {
+      cookie: 'everybody-codes=' + process.env.COOKIE,
+    },
+  });
+}
+
+function decrypt(key, text) {
+  const algorithm = 'aes-256-cbc';
+  const keybytes = Buffer.from(key, 'utf8');
+  const iv = Buffer.from(key.substring(0, 16), 'utf8');
+  const decipher = createDecipheriv(algorithm, keybytes, iv);
+  const encryptedText = Buffer.from(text, 'hex');
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
+
+export async function getData({ year, day, part }) {
+  try {
+    const client = getClient();
+    const info = await client('user/me');
+    const seed = info.seed;
+
+    const keys = await client(`event/${year}/quest/${+day}`);
+    const key = keys['key' + part];
+
+    const res = await ofetch(`https://everybody-codes.b-cdn.net/assets/${year}/${+day}/input/${seed}.json`);
+    const data = decrypt(key, res[part]);
+
+    return data;
+  } catch (e) {
+    consola.error(e);
+    throw new Error('Failed to fetch data', { cause: e });
+  }
+}
 
 export async function submitAnswer({ year, day, level, answer }) {
   if (!process.env.COOKIE) throw new Error('No cookie in config!');
@@ -17,14 +59,11 @@ export async function submitAnswer({ year, day, level, answer }) {
   }
 
   try {
-    const res = await ofetch(
-      `https://everybody.codes/api/event/${year}/quest/${+day}/part/${level}/answer`,
-      {
-        body: { answer },
-        method: 'POST',
-        headers: { cookie: 'everybody-codes=' + process.env.COOKIE },
-      }
-    );
+    const client = getClient();
+    const res = await client(`event/${year}/quest/${+day}/part/${level}/answer`, {
+      body: { answer },
+      method: 'POST',
+    });
     if (res.correct) {
       consola.success('Bonne réponse !');
       return true;
@@ -36,11 +75,7 @@ export async function submitAnswer({ year, day, level, answer }) {
       consola.error('Mauvaise réponse !', wrong[answer]);
 
       incorrect[`${day}-${level}`] = wrong;
-      writeFileSync(
-        'incorrect.json',
-        JSON.stringify(incorrect, null, 2),
-        'utf-8'
-      );
+      writeFileSync('incorrect.json', JSON.stringify(incorrect, null, 2), 'utf-8');
       return false;
     }
   } catch (e) {

@@ -19,6 +19,16 @@
       "args": ["real"],
       "runtimeArgs": ["--env-file", ".env"],
       "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "init",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/init.js",
+      "args": ["--year", "2024", "--day", "1", "--part", "1"],
+      "runtimeArgs": ["--env-file", ".env"],
+      "outputCapture": "std"
     }
   ]
 }
