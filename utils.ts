@@ -22,11 +22,7 @@ export function getCurrentDay() {
 export function getRawData() {
   let filename = './input.txt';
   if (process.argv.length > 2) {
-    if (
-      existsSync(
-        path.join(path.dirname(process.argv[1]), process.argv[2] + '.txt')
-      )
-    )
+    if (existsSync(path.join(path.dirname(process.argv[1]), process.argv[2] + '.txt')))
       filename = process.argv[2] + '.txt';
   }
   let file = path.join(path.dirname(process.argv[1]), filename);
@@ -34,12 +30,7 @@ export function getRawData() {
   return readFileSync(file, 'utf8');
 }
 
-/**
- *
- * @param {boolean?} removeBlank
- * @returns string[]
- */
-export function getDataLines(removeBlank = true) {
+export function getDataLines(removeBlank: boolean | null = true) {
   const raw = getRawData();
   let lines = raw.split(/\r?\n/);
   if (removeBlank) {
@@ -48,16 +39,11 @@ export function getDataLines(removeBlank = true) {
   return lines;
 }
 
-/**
- *
- * @param {string[]} lines
- * @returns string[][]
- */
-export function getGrid(lines) {
+export function getGrid(lines: string[]) {
   return lines.map((l) => l.split(''));
 }
 
-export function newGrid(h, w, value) {
+export function newGrid<T>(h: number, w: number, value: T): Array<Array<T>> {
   return Array(h)
     .fill(0)
     .map(() => Array(w).fill(value));
@@ -69,8 +55,8 @@ export function newGrid(h, w, value) {
  * @param {string} str - The input string containing numbers.
  * @returns {number[]} - An array of numbers extracted from the string.
  */
-export function nums(str) {
-  return str.match(/-?\d+/g).map(Number);
+export function nums(str: string): number[] {
+  return str.match(/-?\d+/g)?.map(Number) || [];
 }
 
 /**
@@ -80,14 +66,11 @@ export function nums(str) {
  * @param {number} y
  * @returns boolean
  */
-export function inGridRange(grid, x, y) {
+export function inGridRange(grid: any[][], x: number, y: number) {
   return y >= 0 && y < grid.length && x >= 0 && x < grid[0].length;
 }
 
-/**
- * @param {any[][]} grid
- */
-export const printGrid = (grid, path = null) => {
+export const printGrid = (grid: any[][], path = null) => {
   const pad = (grid.length - 1).toString().length;
   console.log(''.padStart(pad, ' ') + ' ┌' + '─'.repeat(grid[0].length) + '┐');
   for (let y = 0; y < grid.length; y++) {
@@ -102,30 +85,20 @@ export const printGrid = (grid, path = null) => {
   console.log(''.padStart(pad, ' ') + ' └' + '─'.repeat(grid[0].length) + '┘');
 };
 
-/**
- *
- * @param {number[]} arr
- * @returns number
- */
-export function sum(arr) {
+export function sum(arr: number[]) {
   return arr.reduce((acc, v) => acc + v, 0);
 }
 
-/**
- *
- * @param {number[]} arr
- * @returns number
- */
-export function product(arr) {
+export function product(arr: number[]) {
   return arr.reduce((acc, v) => acc * v, 1);
 }
 
-export function* enumerate(enumerable) {
+export function* enumerate<T>(enumerable: Iterable<T>): Generator<[number, T], void, unknown> {
   let i = 0;
   for (const item of enumerable) yield [i++, item];
 }
 
-export function* enumGrid(grid) {
+export function* enumGrid(grid: any[][]): Generator<{ x: number; y: number; row: any[]; cell: any }, void, unknown> {
   for (const [y, row] of enumerate(grid)) {
     for (const [x, cell] of enumerate(row)) {
       yield { x, y, row, cell };
@@ -133,15 +106,13 @@ export function* enumGrid(grid) {
   }
 }
 
-/** @type {[number, number][]} */
-export const directNeighbors = [
+export const directNeighbors: [number, number][] = [
   [0, 1],
   [1, 0],
   [0, -1],
   [-1, 0],
 ];
-/** @type {[number, number][]} */
-export const diagNeighbors = [
+export const diagNeighbors: [number, number][] = [
   [1, 1],
   [1, -1],
   [-1, -1],
@@ -149,67 +120,46 @@ export const diagNeighbors = [
 ];
 export const neighbors = [...diagNeighbors, ...directNeighbors];
 
-/**
- * Returns all direct neighbors of (x, y)
- * @param {number} x
- * @param {number} y
- * @returns {[number, number][]}
- */
-export function getDirectNeighbors(x, y) {
+export function getDirectNeighbors(x: number, y: number): [number, number][] {
   return directNeighbors.map(([dx, dy]) => [x + dx, y + dy]);
 }
-
-/**
- * Returns all neighbors of (x, y)
- * @param {number} x
- * @param {number} y
- * @returns {[number, number][]}
- */
-export function getNeighbors(x, y) {
+export function getNeighbors(x: number, y: number): [number, number][] {
   return neighbors.map(([dx, dy]) => [x + dx, y + dy]);
 }
 
-export function chunk(arr, len) {
+export function chunk<T>(arr: T[], len: number): T[][] {
   arr = [...arr];
-  return [...Array(Math.ceil(arr.length / len))].map((_, i) =>
-    arr.slice(i * len, (i + 1) * len)
-  );
+  return [...Array(Math.ceil(arr.length / len))].map((_, i) => arr.slice(i * len, (i + 1) * len));
 }
 
-export const gcd = (x, y) => (!y ? x : gcd(y, x % y));
-const _lcm = (x, y) => (x * y) / gcd(x, y);
+export const gcd = (x: number, y: number): number => (!y ? x : gcd(y, x % y));
+const _lcm = (x: number, y: number): number => (x * y) / gcd(x, y);
 /**
  *
  * @param {number[]} arr
  * @returns number[]
  */
-export const lcm = (arr) => {
+export const lcm = (arr: number[]) => {
   return arr.reduce((a, b) => _lcm(a, b));
 };
 
-export function deepEqual(a, b) {
+export function deepEqual(a: any, b: any): boolean {
   if (typeof a !== 'object') {
     return a === b;
   }
-  return (
-    Object.keys(a).length === Object.keys(b).length &&
-    Object.entries(a).every(([k, v]) => deepEqual(v, b[k]))
-  );
+  return Object.keys(a).length === Object.keys(b).length && Object.entries(a).every(([k, v]) => deepEqual(v, b[k]));
 }
 
-export function shallowEqual(a, b) {
+export function shallowEqual(a: any, b: any): boolean {
   if (typeof a !== 'object') {
     return a === b;
   }
-  return (
-    Object.keys(a).length === Object.keys(b).length &&
-    Object.entries(a).every(([k, v]) => v === b[k])
-  );
+  return Object.keys(a).length === Object.keys(b).length && Object.entries(a).every(([k, v]) => v === b[k]);
 }
 
-export function memoize(func, resolver = (...args) => JSON.stringify(args)) {
+export function memoize(func: Function, resolver = (...args: any[]) => JSON.stringify(args)) {
   const cache = new Map();
-  return function (...args) {
+  return function (...args: any[]) {
     const key = resolver.apply(this, args);
     if (cache.has(key)) {
       return cache.get(key);
@@ -220,16 +170,15 @@ export function memoize(func, resolver = (...args) => JSON.stringify(args)) {
   };
 }
 
-export function dist([x1, y1], [x2, y2]) {
+export function dist([x1, y1]: [number, number], [x2, y2]: [number, number]): number {
   return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5;
 }
 
-export function manhattan([x1, y1], [x2, y2]) {
+export function manhattan([x1, y1]: [number, number], [x2, y2]: [number, number]): number {
   return Math.abs(x1 - x2) + Math.abs(y1 - y2);
 }
 
-export const inPath = (path, [x, y]) =>
-  path.some(([i, j]) => i === x && j === y);
+export const inPath = (path: [number, number][], [x, y]: [number, number]) => path.some(([i, j]) => i === x && j === y);
 
 export function timer() {
   let begin = 0n;
@@ -247,7 +196,7 @@ export function timer() {
   return { start, elapsed, format };
 }
 
-export const formatElapsedTime = (elapsed) => {
+export const formatElapsedTime = (elapsed: number) => {
   const diff = Math.abs(elapsed);
 
   const minutes = Math.floor(diff / 60 / 1000) % 60;
@@ -265,7 +214,7 @@ export const formatElapsedTime = (elapsed) => {
   return result + `${milliseconds.toString()}ms`;
 };
 
-export const lacet = (path) => {
+export const lacet = (path: [number, number][]) => {
   let res = 0;
   for (let i = 0; i < path.length; i++) {
     const [x1, y1] = path[i];
@@ -277,11 +226,8 @@ export const lacet = (path) => {
 
 /**
  * These ranges are inclusive
- *
- * @param {[number, number][]} ranges
- * @returns
  */
-export function mergeRanges(ranges) {
+export function mergeRanges(ranges: [number, number][]) {
   ranges.sort(([min1], [min2]) => min1 - min2);
   const merged = [ranges[0]];
   for (const [min, max] of ranges.slice(1)) {
@@ -295,7 +241,7 @@ export function mergeRanges(ranges) {
   return merged;
 }
 
-export function zip(...arr) {
+export function zip<T>(...arr: T[][]): T[][] {
   const length = Math.max(...arr.map((a) => a.length));
   return arr.length
     ? Array(length)
@@ -306,11 +252,8 @@ export function zip(...arr) {
 
 /**
  * positive remainder
- * @param {number} a first operand
- * @param {number} b operand to divide by
- * @returns {number} positive remainder
  */
-export function mod(x, n) {
+export function mod(x: number, n: number): number {
   return ((x % n) + n) % n;
 }
 
@@ -322,7 +265,7 @@ export function mod(x, n) {
  * @param {number[]} b second equation [a2, b2, c2]
  * @returns {number[]} [x, y]
  */
-export function solve2eq2inc([a1, b1, c1], [a2, b2, c2]) {
+export function solve2eq2inc([a1, b1, c1]: number[], [a2, b2, c2]: number[]): number[] {
   const x = (b2 * c1 - b1 * c2) / (b2 * a1 - b1 * a2);
   const y = (c1 - a1 * x) / b1;
   return [x, y];
@@ -340,21 +283,21 @@ export function isPrime(n) {
   return true;
 }
 
-export const count = (arr, value) => {
+export const count = (arr: string | string[], value: string) => {
   if (typeof arr === 'string') arr = arr.split('');
   return arr.filter((v) => v === value).length;
 };
 
-export const permutations = (arr) => {
-  const output = [];
+export const permutations = <T>(arr: T[]) => {
+  const output: T[][] = [];
 
-  const swapInPlace = (arrToSwap, indexA, indexB) => {
+  const swapInPlace = (arrToSwap: T[], indexA: number, indexB: number) => {
     const temp = arrToSwap[indexA];
     arrToSwap[indexA] = arrToSwap[indexB];
     arrToSwap[indexB] = temp;
   };
 
-  const generate = (n, heapArr) => {
+  const generate = (n: number, heapArr: T[]) => {
     if (n === 1) {
       output.push(heapArr.slice());
       return;

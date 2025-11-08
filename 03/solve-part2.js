@@ -1,6 +1,6 @@
 import { consola } from 'consola';
 import clipboard from 'clipboardy';
-import { getCurrentDay, getRawData, nums, sum, timer } from '../utils.js';
+import { getCurrentDay, getRawData, nums, sum, timer } from '../utils.ts';
 
 consola.wrapAll();
 

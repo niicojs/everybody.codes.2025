@@ -2,10 +2,10 @@ import 'dotenv/config';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { consola } from 'consola';
 import mri from 'mri';
-import { getData } from './e-c.js';
+import { getData } from './e-c.ts';
 
 let args = mri(process.argv.slice(2));
-let year = args.year || new Date().getFullYear();
+let year = args.year || new Date().getFullYear().toString();
 let day = new Date().getDate().toString().padStart(2, '0');
 if (args.day) day = (+args.day).toString().padStart(2, '0');
 

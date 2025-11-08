@@ -14,7 +14,7 @@ function getClient() {
   });
 }
 
-function decrypt(key, text) {
+function decrypt(key: string, text: string) {
   const algorithm = 'aes-256-cbc';
   const keybytes = Buffer.from(key, 'utf8');
   const iv = Buffer.from(key.substring(0, 16), 'utf8');
@@ -25,7 +25,7 @@ function decrypt(key, text) {
   return decrypted.toString();
 }
 
-export async function getData({ year, day, part }) {
+export async function getData({ year, day, part }: { year?: string; day: string; part: number }) {
   try {
     const client = getClient();
     const info = await client('user/me');
@@ -44,11 +44,21 @@ export async function getData({ year, day, part }) {
   }
 }
 
-export async function submitAnswer({ year, day, level, answer }) {
+export async function submitAnswer({
+  year,
+  day,
+  level,
+  answer,
+}: {
+  year?: string;
+  day: string;
+  level: string;
+  answer: string;
+}) {
   if (!process.env.COOKIE) throw new Error('No cookie in config!');
-  if (!year) year = new Date().getFullYear();
+  if (!year) year = new Date().getFullYear().toString();
 
-  let incorrect = {};
+  let incorrect: Record<string, any> = {};
   if (existsSync('incorrect.json')) {
     incorrect = JSON.parse(readFileSync('incorrect.json', 'utf-8'));
   }
@@ -78,7 +88,7 @@ export async function submitAnswer({ year, day, level, answer }) {
       writeFileSync('incorrect.json', JSON.stringify(incorrect, null, 2), 'utf-8');
       return false;
     }
-  } catch (e) {
+  } catch (e: any) {
     if (e.statusCode === 423) {
       consola.error('Mauvaise réponse envoyée trop récemment.');
     } else if (e.statusCode === 409) {

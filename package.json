@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@datastructures-js/deque": "^1.0.8",
+    "@types/node": "^24.10.0",
     "clipboardy": "^5.0.0",
     "consola": "^3.4.0",
     "dotenv": "^17.2.3",

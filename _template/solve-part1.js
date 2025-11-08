@@ -10,7 +10,7 @@ import {
   inGridRange,
   nums,
   timer,
-} from '../utils.js';
+} from '../utils.ts';
 
 consola.wrapAll();
 
