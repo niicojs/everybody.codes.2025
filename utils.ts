@@ -159,7 +159,7 @@ export function shallowEqual(a: any, b: any): boolean {
 
 export function memoize(func: Function, resolver = (...args: any[]) => JSON.stringify(args)) {
   const cache = new Map();
-  return function (...args: any[]) {
+  return function (this: unknown, ...args: any[]) {
     const key = resolver.apply(this, args);
     if (cache.has(key)) {
       return cache.get(key);
@@ -205,10 +205,10 @@ export const formatElapsedTime = (elapsed: number) => {
 
   let result = '';
   if (minutes > 0) {
-    result += `${minutes.toString().padStart(2, 0)}min `;
+    result += `${minutes.toString().padStart(2, '0')}min `;
   }
   if (seconds > 0) {
-    result += `${seconds.toString().padStart(2, 0)}s `;
+    result += `${seconds.toString().padStart(2, '0')}s `;
   }
 
   return result + `${milliseconds.toString()}ms`;
@@ -271,7 +271,7 @@ export function solve2eq2inc([a1, b1, c1]: number[], [a2, b2, c2]: number[]): nu
   return [x, y];
 }
 
-export function isPrime(n) {
+export function isPrime(n: number) {
   if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) return false;
   if (n % 2 == 0) return n == 2;
   if (n % 3 == 0) return n == 3;
