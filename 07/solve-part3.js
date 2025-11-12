@@ -29,8 +29,8 @@ function check(name) {
 let names = new Set();
 function generate(start) {
   if (names.has(start)) return;
-  if (start.length > 11) return;
   names.add(start);
+  if (start.length >= 11) return;
 
   const last = start.at(-1);
   if (rules.has(last)) {
