@@ -11,7 +11,6 @@ consola.start('Starting day ' + day, isReal ? '(real)' : '(test)');
 const t = timer();
 
 const numbers = getDataLines().map((l) => +l);
-const checksum = (arr) => arr.reduce((acc, v, i) => acc + v * (i + 1), 0);
 
 let round = 0;
 
@@ -42,10 +41,9 @@ while (true) {
   }
   if (!has_moved) break;
   round++;
-  if (round === 10) break;
 }
 
-let answer = checksum(numbers);
+let answer = round;
 
 consola.success('result', answer);
 consola.success('Done in', t.format());
