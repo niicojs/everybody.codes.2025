@@ -1,6 +1,6 @@
 import { consola } from 'consola';
 import clipboard from 'clipboardy';
-import { getCurrentDay, getDataLines, nums, timer } from '../utils.ts';
+import { getCurrentDay, getDataLines, timer } from '../utils.ts';
 
 consola.wrapAll();
 
@@ -14,7 +14,7 @@ const numbers = getDataLines().map((l) => l.split('-').map((c) => +c));
 const total = numbers.reduce((acc, [a, b]) => acc + b - a + 1, 0);
 consola.info('Total numbers:', total);
 
-let wheel = Array.from({ length: total + 2 });
+let wheel = Array.from({ length: 2 * total });
 
 const start = Math.ceil(wheel.length / 2);
 let [next, left, right] = ['right', start - 1, start + 1];
@@ -32,13 +32,8 @@ while (numbers.length) {
 }
 
 wheel = wheel.slice(start, right).concat(wheel.slice(left + 1, start));
-consola.info(wheel)
 
 let answer = wheel[20252025 % wheel.length];
-
-if (answer === '10119' ) {
-  consola.error('❌ Wrong answer detected');
-}
 
 consola.success('result', answer);
 consola.success('Done in', t.format());
