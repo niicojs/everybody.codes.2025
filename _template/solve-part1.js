@@ -35,10 +35,7 @@ const key = (x, y, x2, y2) => {
 };
 
 function search() {
-  const todo = new TinyQueue(
-    [{ pos: [0, 0], score: 0 }],
-    (a, b) => a.score - b.score
-  );
+  const todo = new TinyQueue([{ pos: [0, 0], score: 0 }], (a, b) => a.score - b.score);
   const visited = new Set();
   while (todo.length > 0) {
     const {
@@ -51,9 +48,7 @@ function search() {
     if (visited.has(key(x, y))) continue;
     visited.add(key(x, y));
 
-    const possible = getDirectNeighbors(x, y).filter(
-      ([nx, ny]) => inGridRange(grid, nx, ny) && grid[ny][nx] !== '#'
-    );
+    const possible = getDirectNeighbors(x, y).filter(([nx, ny]) => inGridRange(grid, nx, ny) && grid[ny][nx] !== '#');
 
     for (const [nx, ny] of possible) {
       todo.push({ pos: [nx, ny], score: score + 1 });
