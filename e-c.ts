@@ -34,7 +34,7 @@ export async function getData({ year, day, part }: { year?: string; day: string;
     const keys = await client(`event/${year}/quest/${+day}`);
     const key = keys['key' + part];
 
-    const res = await ofetch(`https://everybody-codes.b-cdn.net/assets/${year}/${+day}/input/${seed}.json`);
+    const res = await ofetch(`https://everybody.codes/assets/${year}/${+day}/input/${seed}.json`);
     const data = decrypt(key, res[part]);
 
     return data;
