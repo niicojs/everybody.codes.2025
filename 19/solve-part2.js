@@ -14,12 +14,16 @@ const t = timer();
 const lines = getDataLines().map(nums);
 
 const maxx = lines.at(-1)[0];
-const maxy = Math.max(...lines.map((l) => l[1] + l[2]));
+const maxy = Math.max(...lines.map((l) => l[1] + l[2])) + 5;
 const grid = newGrid(maxy, maxx + 1, '.');
+
+for (const x of new Set(lines.map((l) => l[0]))) {
+  for (let wy = 0; wy < maxy; wy++) grid[wy][x] = '#';
+}
 
 for (const [x, y, size] of lines) {
   for (let wy = 0; wy < maxy; wy++) {
-    if (wy < y || wy >= y + size) grid[wy][x] = '#';
+    if (wy >= y && wy < y + size) grid[wy][x] = '.';
   }
 }
 
@@ -63,7 +67,7 @@ function search() {
   }
 }
 
-let answer = 0; //search();
+let answer = search();
 
 consola.success('result', answer);
 consola.success('Done in', t.format());
