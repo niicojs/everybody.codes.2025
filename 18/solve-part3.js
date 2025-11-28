@@ -1,6 +1,6 @@
 import { consola } from 'consola';
 import clipboard from 'clipboardy';
-import { getCurrentDay, getDataLines, nums, timer } from '../utils.ts';
+import { getCurrentDay, getRawData, nums, timer } from '../utils.ts';
 
 consola.wrapAll();
 
@@ -10,7 +10,8 @@ const isReal = process.argv[2] === 'real';
 consola.start('Starting day ' + day, isReal ? '(real)' : '(test)');
 const t = timer();
 
-const lines = getDataLines(false);
+const [one, two] = getRawData().split(/\r?\n\r?\n\r?\n/);
+const lines = one.split(/\r?\n/);
 
 const plants = new Map();
 const has_connection = new Set();
@@ -37,20 +38,28 @@ for (let i = 0; i < lines.length; i++) {
   }
 }
 
-function brightness(plant_id) {
+function brightness(plant_id, round) {
   const plant = plants.get(plant_id);
-  if (plant.free) return plant.free;
+  if (plant.free) return round[plant_id - 1] ? plant.free : 0;
 
   let total = 0;
   for (const conn of plant.connections) {
-    total += conn.conn_thickness * brightness(conn.to_id);
+    total += conn.conn_thickness * brightness(conn.to_id, round);
   }
 
   if (total >= plant.plant_thickness) return total;
   return 0;
 }
 
-let answer = brightness(last_plant);
+const rounds = two.split(/\r?\n/).map((line) => line.split(' ').map(Number));
+
+const max = parseInt('1'.repeat(rounds.at(0).length), 2);
+consola.info('Possibilities:', max);
+
+let answer = 0;
+// for (const round of rounds) {
+//   answer += brightness(last_plant, round);
+// }
 
 consola.success('result', answer);
 consola.success('Done in', t.format());
